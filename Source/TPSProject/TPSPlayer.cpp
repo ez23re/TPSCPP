@@ -100,7 +100,14 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		PlayerInput->BindAction( IA_Turn , ETriggerEvent::Triggered , this , &ATPSPlayer::Turn );
 		PlayerInput->BindAction( IA_PlayerMove , ETriggerEvent::Triggered , this , &ATPSPlayer::Move );
 		PlayerInput->BindAction( IA_Jump , ETriggerEvent::Started , this , &ATPSPlayer::InputJump );
+		PlayerInput->BindAction( IA_Fire , ETriggerEvent::Started , this , &ATPSPlayer::InputFire );
 	}
+}
+
+void ATPSPlayer::InputFire( const FInputActionValue& inputValue )
+{
+	FTransform FirePosition = GunMeshComp->GetSocketTransform(TEXT("FirePosition"));
+	GetWorld()->SpawnActor<ABullet>( BulletFactory , FirePosition);
 }
 
 void ATPSPlayer::Turn( const FInputActionValue& inputValue )

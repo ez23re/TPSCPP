@@ -38,10 +38,10 @@ ABullet::ABullet()
 	MovementComp->SetUpdatedComponent( CollisionComp );
 
 	// 초기 속도
-	MovementComp->InitialSpeed = 5000.f;
+	MovementComp->InitialSpeed = 7000.f;
 
 	// 최대 속도
-	MovementComp->MaxSpeed = 5000.f;
+	MovementComp->MaxSpeed = 7000.f;
 
 	// 반동 여부
 	MovementComp->bShouldBounce = true;
@@ -49,12 +49,24 @@ ABullet::ABullet()
 	// 반동 값 
 	MovementComp->Bounciness = 0.3f;
 
+	// 생명(시간)주기
+	// InitialLifeSpan = 0.3f;
 }
 
 void ABullet::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// 사망 Timer 설정
+	FTimerHandle deathTimer;
+	// GetWorld()->GetTimerManager().SetTimer( deathTimer , this , &ABullet::Die , 0.3f , false );
 	
+	// lambda식으로
+	GetWorld()->GetTimerManager().SetTimer( deathTimer ,
+		FTimerDelegate::CreateLambda( [this]()->void
+				{
+					Destroy();
+				}), 0.3f , false );
 }
 
 void ABullet::Tick(float DeltaTime)
@@ -63,3 +75,7 @@ void ABullet::Tick(float DeltaTime)
 
 }
 
+void ABullet::Die()
+{
+	Destroy();
+}

@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "Bullet.h"
 #include "TPSPlayer.generated.h"
 
 UCLASS()
@@ -29,9 +30,20 @@ public:
 	UPROPERTY(VisibleAnywhere, Category=GunMesh)
 	class USkeletalMeshComponent* GunMeshComp;
 
+	// 총알 공장
+	UPROPERTY( EditDefaultsOnly , Category = BulletFactory)
+	TSubclassOf<class ABullet> BulletFactory;
+
+	UPROPERTY(EditDefaultsOnly, Category=Input)
+	class UInputAction* IA_Fire;
+
+	// 총알 발사 처리함수
+	void InputFire(const FInputActionValue& inputValue);
+
 	UPROPERTY( EditDefaultsOnly, Category=Camera)
 	class UCameraComponent* tpsCamComp;
 
+	// Input
 	UPROPERTY(EditDefaultsOnly, Category=Input)
 	class UInputMappingContext* IMC_TPS;
 	
