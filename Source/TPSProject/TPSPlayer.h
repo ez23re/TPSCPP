@@ -25,7 +25,11 @@ public:
 	UPROPERTY( EditDefaultsOnly , Category=Camera)
 	class USpringArmComponent* springArmComp;
 
-	UPROPERTY( EditDefaultsOnly ,Category=Camera)
+	// Gun Skeletal Mesh
+	UPROPERTY(VisibleAnywhere, Category=GunMesh)
+	class USkeletalMeshComponent* GunMeshComp;
+
+	UPROPERTY( EditDefaultsOnly, Category=Camera)
 	class UCameraComponent* tpsCamComp;
 
 	UPROPERTY(EditDefaultsOnly, Category=Input)

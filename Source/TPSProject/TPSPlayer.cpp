@@ -5,6 +5,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Engine/LocalPlayer.h"
 #include "EnhancedInputSubsystems.h"
+#include "Components/SkeletalMeshComponent.h"
 
 ATPSPlayer::ATPSPlayer()
 {
@@ -36,6 +37,25 @@ ATPSPlayer::ATPSPlayer()
 	this->bUseControllerRotationPitch = false;
 	this->bUseControllerRotationRoll = false;
 	this->bUseControllerRotationYaw = true;
+
+	// Gun Skeletal Mesh Component 등록
+	GunMeshComp = CreateDefaultSubobject<USkeletalMeshComponent>( TEXT( "GunMeshComp" ) );
+
+	// 부모 컴포넌트를 Mesh 컴포넌트로 설정
+	GunMeshComp->SetupAttachment(GetMesh());
+
+	// 스켈레탈 메시 데이터 로드
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> TempGunMesh( TEXT( "/Script/Engine.SkeletalMesh'/Game/FPWeapon/Mesh/SK_FPGun.SK_FPGun'" ) );
+
+	// 데이터 로드가 성공 했다면
+	if( TempGunMesh.Succeeded() ) {
+		// 스켈레탈 메시 데이터 할당
+		GunMeshComp->SetSkeletalMesh( TempGunMesh.Object );
+		
+		// 총 위치 설정
+		GunMeshComp->SetRelativeLocation( FVector( 0 , 60 , 120 ) );
+	}
+
 }
 
 void ATPSPlayer::BeginPlay()
@@ -50,6 +70,8 @@ void ATPSPlayer::BeginPlay()
 			subsystem->AddMappingContext( IMC_TPS , 0 );
 		}
 	}
+
+	JumpMaxCount = 5;
 }
 
 void ATPSPlayer::Tick(float DeltaTime)
@@ -63,8 +85,8 @@ void ATPSPlayer::Tick(float DeltaTime)
 	//FVector vt = WalkSpeed * Direction * DeltaTime;
 	//FVector p = p0 + vt;
 	//SetActorLocation( p );
-	
 	AddMovementInput( Direction );
+	
 	Direction = FVector::ZeroVector; // 안하면 떼도 계속 움직임	
 }
 
