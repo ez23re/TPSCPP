@@ -104,12 +104,17 @@ public:
 	class UInputAction* IA_SniperGun;
 
 	UPROPERTY(EditDefaultsOnly, Category=Input)
-
 	class UInputAction* IA_Jump;
 	
+	// 이동 속도
 	UPROPERTY(EditAnywhere, Category=PlayerSetting)
-	float WalkSpeed = 600.f;
-
+	float WalkSpeed = 200.f;
+	
+	// 달리기 속도
+	UPROPERTY(EditAnywhere, Category=PlayerSetting)
+	float RunSpeed = 600.f;
+	
+	// 이동 방향
 	FVector Direction;
 
 
@@ -117,4 +122,10 @@ public:
 	void LookUp( const FInputActionValue& inputValue );
 	void Move( const FInputActionValue& inputValue );
 	void InputJump( const FInputActionValue& inputValue );
+
+	// 달리기
+	UPROPERTY(EditDefaultsOnly, Category=Input)
+	class UInputAction* IA_Run;
+
+	void InputRun();
 };
